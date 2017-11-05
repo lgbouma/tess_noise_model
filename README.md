@@ -4,7 +4,8 @@ I took the following steps to generate the representative noise model.
 
 Ran `generate_bigfrac.py`
 
-  Substeps I did for sanity checks:
+Substeps I did for sanity checks:
+
     * `plot_supersampled_PSFs.py`
     * `plot_att_err.py`
     * `plot_PRF_comparison.py
