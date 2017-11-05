@@ -86,6 +86,19 @@ axs[1].plot(
         zorder=-2
         )
 
+def N_pix(T):
+    c_3 = -0.2592
+    c_2 = 7.741
+    c_1 = -77.792
+    c_0 = 274.2989
+    return c_3*T**3 + c_2*T**2 + c_1*T + c_0
+
+
+axs[1].plot(df_good['I_mag'],
+        np.maximum(3*np.ones_like(N_pix(df_good['I_mag'])),
+            N_pix(df_good['I_mag'])),
+        label='Stassun+17, p23',
+        zorder=-3)
 
 
 for substr in ['star','sky','ro','sys']:
@@ -108,7 +121,7 @@ leg1 = axs[1].legend(loc='best', fontsize='x-small')
 leg1.get_frame().set_alpha(1)
 axs[1].set_xlabel('apparent Cousins I mag', fontsize='large')
 axs[1].set_ylabel('pixels in optimal aperture', fontsize='large')
-axs[0].set_ylabel('$\sigma\ [\mathrm{ppm}\ \mathrm{hr}^{1/2}]$', fontsize='large')
+axs[0].set_ylabel('$\sigma\ [\mathrm{ppm}\ \mathrm{hr}^{-1/2}]$', fontsize='large')
 axs[0].set_yscale('log')
 
 for ax in axs:
