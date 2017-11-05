@@ -2,3 +2,6 @@
 *.fits
 *.m
 *src/yieldCode*
+doc*
+data*
+results/psf_tests*
