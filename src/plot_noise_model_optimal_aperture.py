@@ -1,7 +1,7 @@
 '''
-RMS vs T_mag
+RMS vs Imag
 and
-selected number of pixels vs T_mag
+optimal number of pixels vs Imag
 '''
 # -*- coding: utf-8 -*-
 from __future__ import division, print_function
@@ -21,37 +21,36 @@ mpl.rcParams.update(pgf_with_custom_preamble)
 
 import numpy as np, pandas as pd, matplotlib.pyplot as plt
 
-df_good = pd.read_csv('../results/selected_noise_model_good_coords.csv')
-df_bad = pd.read_csv('../results/selected_noise_model_bad_coords.csv')
+df_good = pd.read_csv('../results/noise_model_good_coords.csv')
+df_bad = pd.read_csv('../results/noise_model_bad_coords.csv')
 
 f, axs = plt.subplots(nrows=2,ncols=1,figsize=(4,6),sharex=True)
 
 axs[0].plot(
-        df_good['T_mag'],
+        df_good['I_mag'],
         df_good['noise']*1e6,
         label='good coord, total',
         zorder=0
         )
 axs[1].plot(
-        df_good['T_mag'],
+        df_good['I_mag'],
         df_good['N_pix'],
         label='good, $\equiv$ south ecliptic pole',
-        zorder=0,
-        ls=':'
+        zorder=0
         )
 
 axs[0].plot(
-        df_bad['T_mag'],
+        df_bad['I_mag'],
         df_bad['noise']*1e6,
         label='bad coord, total',
         linestyle='-',
         zorder=-1
         )
 axs[1].plot(
-        df_bad['T_mag'],
+        df_bad['I_mag'],
         df_bad['N_pix'],
         label='bad, $\equiv$ galactic center',
-        linestyle='--',
+        linestyle='-',
         zorder=-1
         )
 
@@ -63,12 +62,12 @@ D = 0.0395908321369
 E = -0.0022308015894
 F = 4.73508403525e-5
 
-I = np.array(df_good['T_mag'])
+I = np.array(df_good['I_mag'])
 ln_sigma = lnA + B*I + C*I**2 + D*I**3 + E*I**4 + F*I**5
 sigma_1hr = np.exp(ln_sigma)
 
 axs[0].plot(
-        df_good['T_mag'],
+        df_good['I_mag'],
         sigma_1hr,
         label='S+15 total',
         linestyle='-',
@@ -95,9 +94,9 @@ def N_pix(T):
     return c_3*T**3 + c_2*T**2 + c_1*T + c_0
 
 
-axs[1].plot(df_good['T_mag'],
-        np.maximum(3*np.ones_like(N_pix(df_good['T_mag'])),
-            N_pix(df_good['T_mag'])),
+axs[1].plot(df_good['I_mag'],
+        np.maximum(3*np.ones_like(N_pix(df_good['I_mag'])),
+            N_pix(df_good['I_mag'])),
         label='Stassun+17, p23',
         zorder=-3)
 
@@ -105,7 +104,7 @@ axs[1].plot(df_good['T_mag'],
 for substr in ['star','sky','ro','sys']:
     lsubstr = substr if substr != 'ro' else 'read'
     axs[0].plot(
-            df_good['T_mag'],
+            df_good['I_mag'],
             df_good['noise_'+substr]*1e6,
             label= lsubstr+' (good)',
             linestyle='--',
@@ -120,8 +119,8 @@ leg0 = axs[0].legend(loc='best', fontsize='x-small')
 leg0.get_frame().set_alpha(1)
 leg1 = axs[1].legend(loc='best', fontsize='x-small')
 leg1.get_frame().set_alpha(1)
-axs[1].set_xlabel('apparent $T$ mag', fontsize='large')
-axs[1].set_ylabel('pixels in selected aperture', fontsize='large')
+axs[1].set_xlabel('apparent Cousins I mag', fontsize='large')
+axs[1].set_ylabel('pixels in optimal aperture', fontsize='large')
 axs[0].set_ylabel('$\sigma\ [\mathrm{ppm}\ \mathrm{hr}^{-1/2}]$', fontsize='large')
 axs[0].set_yscale('log')
 
