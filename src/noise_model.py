@@ -206,7 +206,8 @@ def noise_model(
 
     N_pix_sel = N_pix_in_aperture(T_mags)
     # leave N_pix_sel as float, for smooth display at the end
-    N_pix_sel = np.maximum(3*np.ones_like(N_pix_sel), N_pix_sel)
+    N_pix_sel = np.round(
+            np.maximum(3*np.ones_like(N_pix_sel),N_pix_sel)).astype(int)
 
     assert np.max(N_pix_sel) < np.max(N_pix_aper), \
             'maximum aperture size is 17px squared'
